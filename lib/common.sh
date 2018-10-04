@@ -15,6 +15,7 @@ godepsJSON="${build}/Godeps/Godeps.json"
 vendorJSON="${build}/vendor/vendor.json"
 glideYAML="${build}/glide.yaml"
 goMOD="${build}/go.mod"
+godelw="${build}/godelw"
 
 steptxt="----->"
 YELLOW='\033[1;33m'
@@ -176,6 +177,7 @@ loadEnvDir() {
     envFlags+=("GO_SETUP_GOPATH_IN_IMAGE")
     envFlags+=("GO_TEST_SKIP_BENCHMARK")
     envFlags+=("GLIDE_SKIP_INSTALL")
+    envFlags+=("GODEL_DIST")
     local env_dir="${1}"
     if [ ! -z "${env_dir}" ]; then
         mkdir -p "${env_dir}"
@@ -364,6 +366,9 @@ determineTool() {
         setGoVersionFromEnvironment
     elif [ -d "$build/src" -a -n "$(find "$build/src" -mindepth 2 -type f -name '*.go' | sed 1q)" ]; then
         TOOL="gb"
+        setGoVersionFromEnvironment
+    elif [ -f "${godelw}" ]; then
+        TOOL="godel"
         setGoVersionFromEnvironment
     else
         err "Go modules, dep, Godep, GB or govendor are required. For instructions:"
