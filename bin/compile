@@ -587,7 +587,7 @@ case "${TOOL}" in
         cd $src
         step "From directory path $src"
         step "Running: ./godelw dist ${GODEL_DIST}"
-        ./godelw dist "${GODEL_DIST}" 2>&1
+        ./godelw dist "${GODEL_DIST}" --force 2>&1
         # copy distribution tarball into build directory
         # TODO: the following assumes there is single tarball
         cp out/dist/${GODEL_DIST}/*/*/*.tgz $build/${GODEL_DIST}/
